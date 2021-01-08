@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
-
+import router from './routers/router'
 // load the environment variables from the .env file
 dotenv.config({
     path: '.env'
@@ -16,6 +16,8 @@ class Server {
 
 // initialize server app
 const server = new Server();
+
+server.app.use('/api', router);
 
 // make server listen on some port
 ((port = process.env.APP_PORT || 3000) => {
