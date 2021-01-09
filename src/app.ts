@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import router from './routers/router'
+import AppException from './models/exceptions/AppException'
+
 // load the environment variables from the .env file
 dotenv.config({
     path: '.env'
@@ -11,13 +13,28 @@ dotenv.config({
  * @description Will later contain the routing system.
  */
 class Server {
-    public app = express();
+    public app = express()
 }
 
 // initialize server app
 const server = new Server();
 
-server.app.use('/api', router);
+const loggerMiddleware = function (req: Request, res: Response, next: NextFunction) {
+    console.log(`Enter in -> ${req.originalUrl}`)
+    next()
+}
+
+server.app.use(loggerMiddleware)
+
+server.app.use('/api', router)
+
+server.app.use((err: AppException, req: Request, res: Response, next: NextFunction) => {
+    res.status(err.statusCode || 500).json({
+        status: 'error',
+        statusCode: err.statusCode,
+        message: err.message
+    });
+});
 
 // make server listen on some port
 ((port = process.env.APP_PORT || 3000) => {
