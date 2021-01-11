@@ -1,11 +1,17 @@
 import { NextFunction, Request, Response } from 'express'
+import { guid } from '../helpers/common';
 
-export function trackingFilter(handler: any): any {
+export function trackingFilter(handler: any, flags: any[]): any {
     return async (req: Request, res: Response, next: NextFunction) => {
-        console.time(req.originalUrl)
-        const ret = await handler(req, res, next);
-        console.timeEnd(req.originalUrl)
-        return ret
+        const label = `${guid()}: ${req.originalUrl}`
+        console.time(label)
+        try {
+            const ret = await handler(req, res, next);
+            return ret
+        } catch (error) {
+            throw error
+        } finally {
+            console.timeEnd(label)
+        }
     }
 }
-
