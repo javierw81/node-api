@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-export function guid() {
+export function guid(): string {
     const hex = '0123456789ABCDEF'
 
     let buffer = new Uint8Array(16)
