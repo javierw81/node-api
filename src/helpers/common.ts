@@ -9,7 +9,7 @@ export function guid() {
     buffer[6] = 0x40 | (buffer[6] & 0xF)
     buffer[8] = 0x80 | (buffer[8] & 0xF)
 
-    let segments = []
+    const segments = []
 
     for (let i = 0; i < 16; ++i) {
         segments.push(hex[(buffer[i] >> 4 & 0xF)])

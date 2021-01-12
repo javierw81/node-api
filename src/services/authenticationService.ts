@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import AppException from '../models/exceptions/AppException';
+import NotImplementedException from '../models/exceptions/NotImplementedException';
 
 export async function signIn(username: string, password: string) {
     const token = jwt.sign({
@@ -10,13 +10,13 @@ export async function signIn(username: string, password: string) {
 }
 
 export async function signOut() {
-    throw new AppException(500, 'Not implemented')
+    throw new NotImplementedException()
 }
 
 export async function signUp() {
-    throw new AppException(500, 'Not implemented')
+    throw new NotImplementedException()
 }
 
 export async function refresh() {
-    throw new AppException(500, 'Not implemented')
+    throw new NotImplementedException()
 }

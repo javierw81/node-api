@@ -1,10 +1,11 @@
 import Joi from "joi"
-import AppException from "../../models/exceptions/AppException"
+import BadRequestException from "../../models/exceptions/BadRequestException"
 
-export function validate<T>(schema: Joi.ObjectSchema<T>, obj: any) {
-    const result = schema.validate(obj)
-    if (result.error) {
-        throw new AppException(400, result.error.message)
+export async function validate<T>(schema: Joi.ObjectSchema<T>, obj: any) {
+    try {
+        const result = await schema.validateAsync(obj)
+        return result
+    } catch (e) {
+        throw new BadRequestException(e.message)
     }
-    return result.value
 }

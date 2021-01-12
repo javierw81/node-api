@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
 import { authenticationFilter } from './authenticationFilter'
 import { exceptionFilter } from './exceptionFilter'
-import { trackingFilter } from './trackingFilter'
+import { performanceLogFilter } from './performanceLogFilter'
 
 const defaultFilters = [
     authenticationFilter,
-    trackingFilter,
+    performanceLogFilter,
     exceptionFilter
 ]
 

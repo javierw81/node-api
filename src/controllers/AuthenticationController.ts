@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
 import Joi from 'joi'
-import AppException from '../models/exceptions/AppException'
 import * as authenticationService from '../services/authenticationService'
 import { validate } from './validations/validatorHelper'
 
@@ -11,7 +10,7 @@ class AuthenticationController {
             password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
         })
 
-        const result = validate(schema, req.body)
+        const result = await validate(schema, req.body)
 
         const { username, password } = result
 
