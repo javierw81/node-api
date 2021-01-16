@@ -12,4 +12,5 @@ describe('Health - Ping', () => {
         expect(response.body.appName).toBe('NODE-API')
         expect(response.body.env).toBe('test')
     })
+
 })

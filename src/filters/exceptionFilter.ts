@@ -5,6 +5,7 @@ export function exceptionFilter(handler: any, flags: any[]): any {
         try {
             return await handler(req, res, next);
         } catch (e) {
+            // console.log(`ERROR - MSG: ${e.message}`)
             next(e)
         }
     }

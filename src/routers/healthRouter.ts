@@ -5,4 +5,4 @@ import { applyFilters } from '../filters/core'
 
 export default express
     .Router()
-    .get('/ping', applyFilters(HealthController.ping, AuthenticationEnum.allowAnonymous))
+    .get('/ping', applyFilters(HealthController.ping, AuthenticationEnum.allowAnonymous))  

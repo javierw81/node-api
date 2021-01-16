@@ -19,18 +19,18 @@ class AuthenticationController {
     }
 
     async signOut(req: Request, res: Response, next: NextFunction) {
-        const ret = await authenticationService.signOut()
-        res.status(200)
+        await authenticationService.signOut()
+        res.status(200).json({})
     }
 
     async signUp(req: Request, res: Response, next: NextFunction) {
         const ret = await authenticationService.signUp()
-        res.status(200)
+        res.status(200).json({})
     }
 
     async refresh(req: Request, res: Response, next: NextFunction) {
         const ret = await authenticationService.refresh()
-        res.status(200)
+        res.status(200).json({})
     }
 }
 
