@@ -21,8 +21,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v2      
       # Runs a single command using the runners shell
       - name: Install dependencies
         run: npm install
@@ -30,4 +29,11 @@ jobs:
         run: npm run eslint    
       - name: Run Test
         run: npm run test
+        env:
+          APP_NAME: NODE-API
+          APP_PORT: 3000
+          APP_HOST: localhost
+          SECRET: sarlanga
+          JWT_EXPIRY_SECONDS: 10
+          PERFORMANCELOG: disabled
      
