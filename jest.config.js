@@ -5,4 +5,5 @@ module.exports = {
             '<rootDir>/__mocks__/fileMock.js',
     },
     preset: 'ts-jest',
+    testEnvironment: 'node'
 }

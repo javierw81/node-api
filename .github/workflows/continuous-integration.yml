@@ -26,7 +26,9 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run Linter
-        run: npm run eslint    
+        run: npm run eslint   
+      - name: Run Docker compose
+        run: docker-compose up  
       - name: Run Test
         run: npm run test
         env:
@@ -36,4 +38,5 @@ jobs:
           SECRET: sarlanga
           JWT_EXPIRY_SECONDS: 10
           PERFORMANCELOG: disabled
+          DB_CONNECTION_STRING: mongodb://admin:admin@localhost:27017/admin
      

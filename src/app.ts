@@ -6,7 +6,7 @@ import router from './routers/router'
 // load the environment variables from the .env file
 dotenv.config({
     path: `.env.${process.env.NODE_ENV}`
-});
+})
 
 export const app = express()
     .use(express.json())
