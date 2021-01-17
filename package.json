@@ -8,7 +8,8 @@
     "start:development": "NODE_ENV=development nodemon src/server.ts",
     "start:development:debug": "NODE_ENV=development nodemon --exec \"node -r ts-node/register --inspect-brk\" src/server.ts",
     "eslint": "./node_modules/.bin/eslint .",
-    "eslintfix": "./node_modules/.bin/eslint . --fix"
+    "eslintfix": "./node_modules/.bin/eslint . --fix",
+    "docker:compose:up": "docker-compose up -d"
   },
   "repository": {
     "type": "git",
