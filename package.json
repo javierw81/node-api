@@ -5,6 +5,7 @@
   "main": "src/server.ts",
   "scripts": {
     "test": "NODE_ENV=test jest",
+    "test:coverage": "NODE_ENV=test jest --coverageReporters=text",
     "start:development": "NODE_ENV=development nodemon src/server.ts",
     "start:development:debug": "NODE_ENV=development nodemon --exec \"node -r ts-node/register --inspect-brk\" src/server.ts",
     "eslint": "./node_modules/.bin/eslint .",

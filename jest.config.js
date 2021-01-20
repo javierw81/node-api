@@ -5,5 +5,15 @@ module.exports = {
             '<rootDir>/__mocks__/fileMock.js',
     },
     preset: 'ts-jest',
-    testEnvironment: 'node'
+    testEnvironment: 'node',
+    collectCoverage: true,
+    coverageReporters: ["text-summary"],
+    coverageThreshold: {
+        "global": {
+            "branches": 70,
+            "functions": 70,
+            "lines": 70,
+            "statements": 70
+        }
+    }
 }
