@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken'
 import UnauthorizedException from '../models/exceptions/UnauthorizedException';
+import { logger } from '../providers/loggerProvider'
 
 export enum AuthenticationEnum {
     allowAnonymous = 'allowAnonymous'
@@ -18,7 +19,7 @@ export function authenticationFilter(handler: any, flags: any[]): any {
         }
         try {
             const decoded = jwt.verify(token, process.env.SECRET as string)
-            console.log(`Token decoded: ${decoded}`)
+            logger.debug(`Token decoded: ${decoded}`)
         } catch (ex) {
             return next(new UnauthorizedException())
         }

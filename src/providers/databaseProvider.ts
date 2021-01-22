@@ -1,4 +1,5 @@
 import mongoose, { Mongoose } from 'mongoose'
+import { logger } from './loggerProvider'
 
 enum readyStateEnum {
     disconnected = 0,
@@ -16,11 +17,11 @@ export const connectDb = (): Promise<Mongoose> => {
     const cs = process.env.DB_CONNECTION_STRING as string
     const dbConnection = mongoose.connection
     dbConnection.on('error', () => {
-        console.log('Database connection FAIL')
+        logger.crit('Database connection FAIL')
     })
 
     dbConnection.once('open', () => {
-        console.log('Database connection READY')
+        logger.info('Database connection READY')
     })
 
     const options = {
