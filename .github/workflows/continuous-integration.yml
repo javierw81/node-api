@@ -39,4 +39,7 @@ jobs:
           JWT_EXPIRY_SECONDS: 10
           PERFORMANCELOG: disabled
           DB_CONNECTION_STRING: mongodb://admin:admin@localhost:27017/admin
+          LOGGER_LEVEL: error
+          LOGGER_CONSOLE: disabled
+          LOGGER_FILE: logs/log-%DATE%.log
      
