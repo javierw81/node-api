@@ -17,12 +17,14 @@ export function authenticationFilter(handler: any, flags: any[]): any {
         if (!token) {
             return next(new UnauthorizedException())
         }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let decoded: any
         try {
-            const decoded = jwt.verify(token, process.env.SECRET as string)
-            logger.debug(`Token decoded: ${decoded}`)
+            decoded = jwt.verify(token, process.env.SECRET as string)
+            logger.debug('Token decoded', { decoded })
         } catch (ex) {
             return next(new UnauthorizedException())
         }
-        return await handler(req, res, next)
+        return await handler(req, res, next, decoded.username)
     }
 }

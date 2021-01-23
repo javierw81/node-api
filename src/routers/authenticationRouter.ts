@@ -8,4 +8,4 @@ export default express
     .post('/signin', applyFilters(AuthenticationController.signIn, AuthenticationEnum.allowAnonymous))
     .post('/signup', applyFilters(AuthenticationController.signUp, AuthenticationEnum.allowAnonymous))
     .post('/signout', applyFilters(AuthenticationController.signOut))
-    .post('/refresh', applyFilters(AuthenticationController.refresh))
+    .post('/refresh', applyFilters(AuthenticationController.refresh, AuthenticationEnum.allowAnonymous))

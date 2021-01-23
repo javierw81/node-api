@@ -1,8 +1,12 @@
 import supertest from 'supertest'
 import { app } from '../../src/app'
 import { PREFIX_URL, TOKEN_VALID, TOKEN_EXPIRED } from '../supports/constants'
+import { closeKeyValueDb } from '../../src/providers/keyValueDatabaseProvider'
 
 describe('Authentication - signOut', () => {
+    afterAll(async () => {
+        closeKeyValueDb()
+    })
     it('Post is success', async () => {
 
         const response = await supertest(app)

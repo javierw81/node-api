@@ -3,16 +3,25 @@ import { app } from '../../src/app'
 import { PREFIX_URL } from '../supports/constants'
 import { closeKeyValueDb } from '../../src/providers/keyValueDatabaseProvider'
 
-describe('Authentication - signIn', () => {
+describe('Authentication - refresh', () => {
     afterAll(async () => {
         closeKeyValueDb()
     })
     it('Post is success', async () => {
-        const response = await supertest(app)
+
+        const responseSignIn = await supertest(app)
             .post(`${PREFIX_URL}/signin`)
             .send({
                 "username": "chavotest",
                 "password": "chimoltrufia"
+            })
+            .then(response => response)
+
+        const response = await supertest(app)
+            .post(`${PREFIX_URL}/refresh`)
+            .send({
+                "username": "chavotest",
+                "refreshToken": responseSignIn.body.refreshToken
             })
             .then(response => response)
 
@@ -23,12 +32,29 @@ describe('Authentication - signIn', () => {
 
     })
 
+    it('Post is unauthorized', async () => {
+        const response = await supertest(app)
+            .post(`${PREFIX_URL}/refresh`)
+            .send({
+                "username": "chavotest",
+                "refreshToken": "chimoltrufia"
+            })
+            .then(response => response)
+
+        expect(response.status).toBe(401)
+        expect(response.body.token).toBeUndefined()
+        expect(response.body.refreshToken).toBeUndefined()
+        expect(response.body.status).toBe('error')
+        expect(response.body.statusCode).toBe(401)
+        expect(response.body.message).toBe('Invalid token')
+    })
+
     it('Post is badRequest', async () => {
         const response = await supertest(app)
-            .post(`${PREFIX_URL}/signin`)
+            .post(`${PREFIX_URL}/refresh`)
             .send({
                 "username": "",
-                "password": ""
+                "refreshToken": ""
             })
             .then(response => response)
 
@@ -42,10 +68,10 @@ describe('Authentication - signIn', () => {
 
     it('Post with invalid body object is badRequest', async () => {
         const response = await supertest(app)
-            .post(`${PREFIX_URL}/signin`)
+            .post(`${PREFIX_URL}/refresh`)
             .send({
                 "username": "invalid_username",
-                "password": " "
+                "refreshToken": " "
             })
             .then(response => response)
 

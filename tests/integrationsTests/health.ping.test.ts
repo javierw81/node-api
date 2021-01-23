@@ -1,15 +1,17 @@
 import supertest from 'supertest'
 import { app } from '../../src/app'
 import { closeDb, connectDb } from '../../src/providers/databaseProvider'
+import { closeKeyValueDb } from '../../src/providers/keyValueDatabaseProvider'
 import { PREFIX_URL } from '../supports/constants'
 
 describe('Health - Ping', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
         await connectDb()
     })
 
-    afterEach(async () => {
+    afterAll(async () => {
         await closeDb()
+        closeKeyValueDb()
     })
 
     it('Get is success', async () => {
@@ -19,6 +21,7 @@ describe('Health - Ping', () => {
             .then(response => response)
         expect(response.status).toBe(200)
         expect(response.body.statusDb).toBe('connected')
+        expect(response.body.statusKeyValueDb).toBe('connected')
         expect(response.body.status).toBe('ok')
         expect(response.body.appName).toBe('NODE-API')
         expect(response.body.env).toBe('test')

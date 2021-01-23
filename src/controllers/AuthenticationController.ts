@@ -18,8 +18,8 @@ class AuthenticationController {
         res.json(ret)
     }
 
-    async signOut(req: Request, res: Response, next: NextFunction) {
-        await authenticationService.signOut()
+    async signOut(req: Request, res: Response, next: NextFunction, username: string) {
+        await authenticationService.signOut(username)
         res.status(200).json({})
     }
 
@@ -29,8 +29,17 @@ class AuthenticationController {
     }
 
     async refresh(req: Request, res: Response, next: NextFunction) {
-        const ret = await authenticationService.refresh()
-        res.status(200).json({})
+        const schema = Joi.object({
+            username: Joi.string().alphanum().min(3).max(30).required(),
+            refreshToken: Joi.string().required()
+        })
+
+        const result = await validate(schema, req.body)
+
+        const { username, refreshToken } = result
+
+        const ret = await authenticationService.refresh(username, refreshToken)
+        res.json(ret)
     }
 }
 
