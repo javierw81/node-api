@@ -22,3 +22,16 @@ export function guid(): string {
 
     return segments.join('')
 }
+
+export function generateSalt(): string {
+    return crypto.randomBytes(16).toString('hex');
+}
+
+export function hash(text: string, salt: string): string {
+    return crypto.pbkdf2Sync(text, salt, 1000, 64, `sha512`).toString(`hex`);
+}
+
+export function verifyHash(text: string, hash: string, salt: string): boolean {
+    const hashGenerated = crypto.pbkdf2Sync(text, salt, 1000, 64, `sha512`).toString(`hex`);
+    return hashGenerated === hash;
+}

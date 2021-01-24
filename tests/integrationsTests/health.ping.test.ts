@@ -14,7 +14,7 @@ describe('Health - Ping', () => {
         closeKeyValueDb()
     })
 
-    it('Get is success', async () => {
+    test('Get is success', async () => {
 
         const response = await supertest(app)
             .get(`${PREFIX_URL}/ping`)

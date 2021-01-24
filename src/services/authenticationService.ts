@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { keyValueClient } from '../providers/keyValueDatabaseProvider'
-import { guid } from '../helpers/common';
+import { guid } from '../helpers/crypto';
 import NotImplementedException from '../models/exceptions/NotImplementedException';
 import UnauthorizedException from '../models/exceptions/UnauthorizedException';
 import { promisify } from 'util';
@@ -27,7 +27,7 @@ export async function signOut(username: string, refreshToken: string): Promise<v
     keyValueClient.del(username)
 }
 
-export async function signUp(): Promise<void> {
+export async function signUp(userParams: any): Promise<void> {
     throw new NotImplementedException()
 }
 

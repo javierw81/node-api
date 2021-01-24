@@ -35,8 +35,18 @@ class AuthenticationController {
     }
 
     async signUp(req: Request, res: Response, next: NextFunction) {
-        const ret = await authenticationService.signUp()
-        res.status(200).json({})
+
+        const schema = Joi.object({
+            username: Joi.string().alphanum().min(3).max(30).required(),
+            password: Joi.string().max(50).pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+            name: Joi.string().alphanum().max(100).required(),
+            surname: Joi.string().alphanum().max(100).required(),
+        })
+
+        const result = await validate(schema, req.body)
+
+        const ret = await authenticationService.signUp(result)
+        res.status(200).json(ret)
     }
 
     async refresh(req: Request, res: Response, next: NextFunction) {

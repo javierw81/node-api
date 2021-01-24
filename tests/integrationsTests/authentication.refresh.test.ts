@@ -7,7 +7,7 @@ describe('Authentication - refresh', () => {
     afterAll(async () => {
         closeKeyValueDb()
     })
-    it('Post is success', async () => {
+    test('Post is success', async () => {
 
         const responseSignIn = await supertest(app)
             .post(`${PREFIX_URL}/signin`)
@@ -32,7 +32,7 @@ describe('Authentication - refresh', () => {
 
     })
 
-    it('Post is unauthorized', async () => {
+    test('Post is unauthorized', async () => {
         const response = await supertest(app)
             .post(`${PREFIX_URL}/refresh`)
             .send({
@@ -49,7 +49,7 @@ describe('Authentication - refresh', () => {
         expect(response.body.message).toBe('Invalid token')
     })
 
-    it('Post is badRequest', async () => {
+    test('Post is badRequest', async () => {
         const response = await supertest(app)
             .post(`${PREFIX_URL}/refresh`)
             .send({
@@ -66,7 +66,7 @@ describe('Authentication - refresh', () => {
         expect(response.body.message).toBe('"username" is not allowed to be empty')
     })
 
-    it('Post with invalid body object is badRequest', async () => {
+    test('Post with invalid body object is badRequest', async () => {
         const response = await supertest(app)
             .post(`${PREFIX_URL}/refresh`)
             .send({

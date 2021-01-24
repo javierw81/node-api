@@ -7,7 +7,7 @@ describe('Authentication - signOut', () => {
     afterAll(async () => {
         closeKeyValueDb()
     })
-    it('Post is success', async () => {
+    test('Post is success', async () => {
 
         const responseSignIn = await supertest(app)
             .post(`${PREFIX_URL}/signin`)
@@ -28,7 +28,7 @@ describe('Authentication - signOut', () => {
         expect(response.status).toBe(200)
     })
 
-    it('Post is unauthorized', async () => {
+    test('Post is unauthorized', async () => {
         const wrongToken = 'wrong_token'
         const response = await supertest(app)
             .post(`${PREFIX_URL}/signout`)
@@ -41,7 +41,7 @@ describe('Authentication - signOut', () => {
         expect(response.status).toBe(401)
     })
 
-    it('Post is expired', async () => {
+    test('Post is expired', async () => {
         const response = await supertest(app)
             .post(`${PREFIX_URL}/signout`)
             .send({
@@ -54,7 +54,7 @@ describe('Authentication - signOut', () => {
     })
 
 
-    it('Post without header authorization is unauthorized', async () => {
+    test('Post without header authorization is unauthorized', async () => {
         const response = await supertest(app)
             .post(`${PREFIX_URL}/signout`)
             .send({
@@ -65,7 +65,7 @@ describe('Authentication - signOut', () => {
         expect(response.status).toBe(401)
     })
 
-    it('Post is badRequest', async () => {
+    test('Post is badRequest', async () => {
         const response = await supertest(app)
             .post(`${PREFIX_URL}/signout`)
             .send({

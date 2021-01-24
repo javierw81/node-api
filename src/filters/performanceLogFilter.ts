@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { guid } from '../helpers/common';
+import { guid } from '../helpers/crypto';
 import { logger } from '../providers/loggerProvider'
 
 export function performanceLogFilter(handler: any, flags: any[]): any {

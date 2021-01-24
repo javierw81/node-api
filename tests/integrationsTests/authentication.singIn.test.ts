@@ -7,7 +7,7 @@ describe('Authentication - signIn', () => {
     afterAll(async () => {
         closeKeyValueDb()
     })
-    it('Post is success', async () => {
+    test('Post is success', async () => {
         const response = await supertest(app)
             .post(`${PREFIX_URL}/signin`)
             .send({
@@ -23,7 +23,7 @@ describe('Authentication - signIn', () => {
 
     })
 
-    it('Post is badRequest', async () => {
+    test('Post is badRequest', async () => {
         const response = await supertest(app)
             .post(`${PREFIX_URL}/signin`)
             .send({
@@ -40,7 +40,7 @@ describe('Authentication - signIn', () => {
         expect(response.body.message).toBe('"username" is not allowed to be empty')
     })
 
-    it('Post with invalid body object is badRequest', async () => {
+    test('Post with invalid body object is badRequest', async () => {
         const response = await supertest(app)
             .post(`${PREFIX_URL}/signin`)
             .send({
