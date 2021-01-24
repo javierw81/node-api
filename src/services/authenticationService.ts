@@ -5,12 +5,25 @@ import NotImplementedException from '../models/exceptions/NotImplementedExceptio
 import UnauthorizedException from '../models/exceptions/UnauthorizedException';
 import { promisify } from 'util';
 
+export class Payload {
+    username = "";
+}
 export async function signIn(username: string, password: string): Promise<any> {
 
-    return generateToken(username)
+    //TODO: validate user with DB
+
+    const payload: Payload = {
+        username
+    }
+
+    const token = generateToken(payload)
+    const refreshToken = generateRefreshToken(username)
+
+    return { username, refreshToken, token }
 }
 
-export async function signOut(username: string): Promise<void> {
+export async function signOut(username: string, refreshToken: string): Promise<void> {
+    await verifyRefreshToken(username, refreshToken)
     keyValueClient.del(username)
 }
 
@@ -18,34 +31,50 @@ export async function signUp(): Promise<void> {
     throw new NotImplementedException()
 }
 
-export async function refresh(username: string, refreshToken: string): Promise<void> {
-    const refreshTokenStored: string | null = await promisify(keyValueClient.get).bind(keyValueClient)(username);
-    if (refreshTokenStored == null || refreshTokenStored !== refreshToken) {
-        throw new UnauthorizedException()
-    }
-
-    return generateToken(username)
-}
-
-function generateToken(username: string): any {
-    const secret = process.env.SECRET as string
-    const tokenExpirySeconds = process.env.JWT_EXPIRY_SECONDS ? parseInt(process.env.JWT_EXPIRY_SECONDS as string) : undefined
-    const refreshTokenExpirySeconds = process.env.JWT_REFRESH_EXPIRY_SECONDS ? parseInt(process.env.JWT_REFRESH_EXPIRY_SECONDS as string) : 10000
-    const options: jwt.SignOptions = {}
-
-    const payload = {
+export async function refresh(username: string, refreshToken: string): Promise<any> {
+    const { refreshTokenExpirySeconds } = getTokenConfig()
+    await verifyRefreshToken(username, refreshToken)
+    const payload: Payload = {
         username
     }
+    const token: string = generateToken(payload)
+
+    keyValueClient.expire(refreshToken, refreshTokenExpirySeconds)
+
+    return { username, token }
+}
+
+async function verifyRefreshToken(username: string, refreshToken: string): Promise<void> {
+    const refreshTokenStored: string | null = await promisify(keyValueClient.get).bind(keyValueClient)(refreshToken);
+    if (refreshTokenStored == null || refreshTokenStored !== username) {
+        throw new UnauthorizedException()
+    }
+}
+
+function generateRefreshToken(username: string): string {
+    const { refreshTokenExpirySeconds } = getTokenConfig()
+    const refreshToken: string = guid()
+    keyValueClient.set(refreshToken, username)
+    keyValueClient.expire(refreshToken, refreshTokenExpirySeconds)
+
+    return refreshToken
+}
+
+function generateToken(payload: Payload): string {
+    const { tokenExpirySeconds, secret } = getTokenConfig()
+    const options: jwt.SignOptions = {}
 
     if (tokenExpirySeconds) {
         options.expiresIn = tokenExpirySeconds
     }
 
-    const token = jwt.sign(payload, secret, options)
+    return jwt.sign(payload, secret, options)
+}
 
-    const refreshToken = guid()
-    keyValueClient.set(username, refreshToken)
-    keyValueClient.expire(username, refreshTokenExpirySeconds)
-
-    return { username, token, refreshToken }
+function getTokenConfig() {
+    return {
+        secret: process.env.SECRET as string,
+        tokenExpirySeconds: process.env.JWT_EXPIRY_SECONDS ? parseInt(process.env.JWT_EXPIRY_SECONDS as string) : undefined,
+        refreshTokenExpirySeconds: process.env.JWT_REFRESH_EXPIRY_SECONDS ? parseInt(process.env.JWT_REFRESH_EXPIRY_SECONDS as string) : 10000
+    }
 }

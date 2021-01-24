@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import Joi from 'joi'
+import { logger } from '../providers/loggerProvider'
 import * as authenticationService from '../services/authenticationService'
 import { validate } from './validations/validatorHelper'
 
@@ -19,7 +20,17 @@ class AuthenticationController {
     }
 
     async signOut(req: Request, res: Response, next: NextFunction, username: string) {
-        await authenticationService.signOut(username)
+        const schema = Joi.object({
+            refreshToken: Joi.string().required()
+        })
+        const result = await validate(schema, req.body)
+
+        const { refreshToken } = result
+
+
+        logger.info(`username: ${username} had been signout for refreshToken: ${refreshToken}`)
+
+        await authenticationService.signOut(username, refreshToken)
         res.status(200).json({})
     }
 

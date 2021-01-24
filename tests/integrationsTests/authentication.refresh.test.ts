@@ -28,7 +28,7 @@ describe('Authentication - refresh', () => {
         expect(response.status).toBe(200)
         expect(response.body.username).toBe("chavotest")
         expect(response.body.token).toBeDefined()
-        expect(response.body.refreshToken).toBeDefined()
+        expect(response.body.refreshToken).toBeUndefined()
 
     })
 
