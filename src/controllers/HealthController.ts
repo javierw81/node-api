@@ -7,6 +7,7 @@ class HealthController {
         const ret = {
             env: process.env.NODE_ENV,
             appName: process.env.APP_NAME,
+            appVersion: process.env.npm_package_version,
             statusDb: statusDb(),
             statusKeyValueDb: statusKeyValueDb(),
             status: "ok"
