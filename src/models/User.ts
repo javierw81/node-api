@@ -2,6 +2,7 @@ import { Schema, model, Document, SchemaTypes } from 'mongoose';
 
 export interface User {
     username: string
+    email: string
     password: string
     name: string
     surname: string
@@ -18,6 +19,11 @@ const UserSchema = new Schema({
         unique: true,
         lowercase: true,
         maxlength: 30,
+        trim: true,
+    },
+    email: {
+        type: SchemaTypes.String,
+        required: true,
         trim: true,
     },
     password: {
@@ -49,7 +55,11 @@ const UserSchema = new Schema({
         required: true,
         default: false,
     },
-}).index({ username: 1, active: 1 });
+    createdAt: {
+        type: Date,
+        immutable: true
+    }
+}, { timestamps: true }).index({ username: 1, active: 1 });
 
 export const UserModel = model<UserDocument>(
     'Users',

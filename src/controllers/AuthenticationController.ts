@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import Joi from 'joi'
 import { logger } from '../providers/loggerProvider'
 import * as authenticationService from '../services/authenticationService'
+import * as userService from '../services/userService'
 import { validate } from './validations/validatorHelper'
 
 class AuthenticationController {
@@ -16,6 +17,20 @@ class AuthenticationController {
         const { username, password } = result
 
         const ret = await authenticationService.signIn(username, password)
+        res.json(ret)
+    }
+
+    async refresh(req: Request, res: Response, next: NextFunction) {
+        const schema = Joi.object({
+            username: Joi.string().alphanum().min(3).max(30).required(),
+            refreshToken: Joi.string().required()
+        })
+
+        const result = await validate(schema, req.body)
+
+        const { username, refreshToken } = result
+
+        const ret = await authenticationService.refresh(username, refreshToken)
         res.json(ret)
     }
 
@@ -35,32 +50,18 @@ class AuthenticationController {
     }
 
     async signUp(req: Request, res: Response, next: NextFunction) {
-
         const schema = Joi.object({
             username: Joi.string().alphanum().min(3).max(30).required(),
+            email: Joi.string().email().required(),
             password: Joi.string().max(50).pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
-            name: Joi.string().alphanum().max(100).required(),
-            surname: Joi.string().alphanum().max(100).required(),
+            name: Joi.string().max(100).required(),
+            surname: Joi.string().max(100).required(),
         })
 
         const result = await validate(schema, req.body)
 
-        const ret = await authenticationService.signUp(result)
+        const ret = await userService.signUp(result)
         res.status(200).json(ret)
-    }
-
-    async refresh(req: Request, res: Response, next: NextFunction) {
-        const schema = Joi.object({
-            username: Joi.string().alphanum().min(3).max(30).required(),
-            refreshToken: Joi.string().required()
-        })
-
-        const result = await validate(schema, req.body)
-
-        const { username, refreshToken } = result
-
-        const ret = await authenticationService.refresh(username, refreshToken)
-        res.json(ret)
     }
 }
 

@@ -7,6 +7,7 @@ describe('Authentication - signIn', () => {
     afterAll(async () => {
         closeKeyValueDb()
     })
+
     test('Post is success', async () => {
         const response = await supertest(app)
             .post(`${PREFIX_URL}/signin`)

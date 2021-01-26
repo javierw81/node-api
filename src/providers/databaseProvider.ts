@@ -24,6 +24,15 @@ export const connectDb = (): Promise<Mongoose> => {
         logger.info('Database connection READY')
     })
 
+    if (process.env.DB_DEBUG === 'enabled') {
+        mongoose.set("debug", (collectionName: string, method: string, query: any, doc: any) => {
+            logger.debug(`DatabaseProvider: ${collectionName}.${method}`,
+                {
+                    query: JSON.stringify(query), document: doc
+                }
+            )
+        })
+    }
     const options = {
         useNewUrlParser: true,
         useCreateIndex: true,

@@ -7,6 +7,9 @@ module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
     collectCoverage: true,
+    collectCoverageFrom: [
+        "src/**/{!(server),}.ts"
+    ],
     coverageReporters: ["text-summary"],
     coverageThreshold: {
         "global": {

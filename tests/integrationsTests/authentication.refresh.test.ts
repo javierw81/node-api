@@ -7,6 +7,7 @@ describe('Authentication - refresh', () => {
     afterAll(async () => {
         closeKeyValueDb()
     })
+
     test('Post is success', async () => {
 
         const responseSignIn = await supertest(app)

@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken'
 import { keyValueClient } from '../providers/keyValueDatabaseProvider'
-import { guid } from '../helpers/crypto';
-import NotImplementedException from '../models/exceptions/NotImplementedException';
-import UnauthorizedException from '../models/exceptions/UnauthorizedException';
-import { promisify } from 'util';
+import { guid } from '../helpers/crypto'
+import UnauthorizedException from '../models/exceptions/UnauthorizedException'
+import { promisify } from 'util'
 
-export class Payload {
-    username = "";
+export interface Payload {
+    username: string
 }
 export async function signIn(username: string, password: string): Promise<any> {
 
@@ -27,9 +26,6 @@ export async function signOut(username: string, refreshToken: string): Promise<v
     keyValueClient.del(username)
 }
 
-export async function signUp(userParams: any): Promise<void> {
-    throw new NotImplementedException()
-}
 
 export async function refresh(username: string, refreshToken: string): Promise<any> {
     const { refreshTokenExpirySeconds } = getTokenConfig()
