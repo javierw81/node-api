@@ -2,9 +2,20 @@ import supertest from 'supertest'
 import { app } from '../../src/app'
 import { PREFIX_URL, TOKEN_VALID, TOKEN_EXPIRED } from '../supports/constants'
 import { closeKeyValueDb } from '../../src/providers/keyValueDatabaseProvider'
+import { closeDb, connectDb } from '../../src/providers/databaseProvider'
+import { dataMocker } from '../supports/dataMocker'
+import { UserModel } from '../../src/models/User'
+import { defaultUsers } from '../mocks/usersMock'
 
 describe('Authentication - signOut', () => {
+    beforeAll(async () => {
+        await connectDb()
+        await dataMocker.clean(UserModel)
+        await dataMocker.addData(UserModel, defaultUsers)
+    })
+
     afterAll(async () => {
+        await closeDb()
         closeKeyValueDb()
     })
     test('Post is success', async () => {

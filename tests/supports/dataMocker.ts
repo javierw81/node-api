@@ -1,8 +1,8 @@
 import { Model, Document } from 'mongoose'
 
 class DataMocker {
-    public async clean<M extends Document>(objectModel: Model<M>): Promise<void> {
-        return objectModel.deleteMany({});
+    public async clean<M extends Document>(objectModel: Model<M>): Promise<any> {
+        return objectModel.deleteMany({}).exec()
     }
 
     public async addData<M extends Document>(objectModel: Model<M>, data?: any[]): Promise<M | undefined> {

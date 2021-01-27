@@ -2,9 +2,20 @@ import supertest from 'supertest'
 import { app } from '../../src/app'
 import { PREFIX_URL } from '../supports/constants'
 import { closeKeyValueDb } from '../../src/providers/keyValueDatabaseProvider'
+import { dataMocker } from '../supports/dataMocker'
+import { UserModel } from '../../src/models/User'
+import { defaultUsers } from '../mocks/usersMock'
+import { connectDb, closeDb } from '../../src/providers/databaseProvider'
 
 describe('Authentication - signIn', () => {
+    beforeAll(async () => {
+        await connectDb()
+        await dataMocker.clean(UserModel)
+        await dataMocker.addData(UserModel, defaultUsers)
+    })
+
     afterAll(async () => {
+        await closeDb()
         closeKeyValueDb()
     })
 

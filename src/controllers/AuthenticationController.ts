@@ -3,13 +3,13 @@ import Joi from 'joi'
 import { logger } from '../providers/loggerProvider'
 import * as authenticationService from '../services/authenticationService'
 import * as userService from '../services/userService'
-import { validate } from './validations/validatorHelper'
+import { validate, patterns } from './validations/validatorHelper'
 
 class AuthenticationController {
     async signIn(req: Request, res: Response, next: NextFunction) {
         const schema = Joi.object({
             username: Joi.string().alphanum().min(3).max(30).required(),
-            password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
+            password: Joi.string().pattern(patterns.password).required()
         })
 
         const result = await validate(schema, req.body)
@@ -53,7 +53,7 @@ class AuthenticationController {
         const schema = Joi.object({
             username: Joi.string().alphanum().min(3).max(30).required(),
             email: Joi.string().email().required(),
-            password: Joi.string().max(50).pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+            password: Joi.string().max(50).pattern(patterns.password).required(),
             name: Joi.string().max(100).required(),
             surname: Joi.string().max(100).required(),
         })

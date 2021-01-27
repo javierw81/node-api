@@ -1,4 +1,5 @@
 import { Schema, model, Document, SchemaTypes } from 'mongoose';
+import { emailValidator } from './validators/emailValidator';
 
 export interface User {
     username: string
@@ -19,12 +20,13 @@ const UserSchema = new Schema({
         unique: true,
         lowercase: true,
         maxlength: 30,
-        trim: true,
+        trim: true
     },
     email: {
         type: SchemaTypes.String,
         required: true,
         trim: true,
+        validate: emailValidator
     },
     password: {
         type: SchemaTypes.String,

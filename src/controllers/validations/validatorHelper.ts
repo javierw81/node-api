@@ -9,3 +9,7 @@ export async function validate<T>(schema: Joi.ObjectSchema<T>, obj: any): Promis
         throw new BadRequestException(e.message)
     }
 }
+
+export const patterns = {
+    password: new RegExp('^[a-zA-Z0-9]{3,30}$')
+}

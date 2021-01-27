@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/server.ts",
   "scripts": {
-    "test": "NODE_ENV=test jest --detectOpenHandles",
-    "test:coverage": "NODE_ENV=test jest --coverageReporters=text",
+    "test": "NODE_ENV=test DEBUG=-* jest  --no-cache --detectOpenHandles",
+    "test:coverage": "NODE_ENV=test DEBUG=-* jest --no-cache --detectOpenHandles --coverageReporters=text",
     "start:development": "NODE_ENV=development nodemon -r dotenv/config src/server.ts dotenv_config_path=.env.development",
     "start:development:debug": "NODE_ENV=development nodemon --exec \"node -r ts-node/register --inspect-brk\" -r dotenv/config  src/server.ts dotenv_config_path=.env.development",
     "eslint": "./node_modules/.bin/eslint .",

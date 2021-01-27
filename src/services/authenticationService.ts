@@ -3,13 +3,18 @@ import { keyValueClient } from '../providers/keyValueDatabaseProvider'
 import { guid } from '../helpers/crypto'
 import UnauthorizedException from '../models/exceptions/UnauthorizedException'
 import { promisify } from 'util'
+import { UserModel } from '../models/User'
 
 export interface Payload {
     username: string
 }
 export async function signIn(username: string, password: string): Promise<any> {
 
-    //TODO: validate user with DB
+    const user = await UserModel.findOne({ username: username }).exec()
+
+    if (!user || user.password !== password) {
+        throw new UnauthorizedException()
+    }
 
     const payload: Payload = {
         username

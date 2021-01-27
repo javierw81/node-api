@@ -28,11 +28,15 @@ export const connectDb = (): Promise<Mongoose> => {
         mongoose.set("debug", (collectionName: string, method: string, query: any, doc: any) => {
             logger.debug(`DatabaseProvider: ${collectionName}.${method}`,
                 {
-                    query: JSON.stringify(query), document: doc
+                    query: JSON.stringify(query),
+                    document: doc
                 }
             )
         })
+    } else {
+        mongoose.set("debug", false)
     }
+
     const options = {
         useNewUrlParser: true,
         useCreateIndex: true,

@@ -34,6 +34,24 @@ describe('Authentication - signUp', () => {
         expect(response.status).toBe(200)
         expect(response.body).toMatchObject(userParams)
     })
+    test('Post is badRequest, email incorrect', async () => {
+        const userParams = {
+            "username": "chavotest",
+            "password": "chimoltrufia",
+            "email": "javierw81gmail.com",
+            "name": "Chavo Test",
+            "surname": "Test"
+        }
+
+        const response = await supertest(app)
+            .post(`${PREFIX_URL}/signup`)
+            .send(userParams)
+            .then(response => response)
+
+        expect(response.status).toBe(400)
+        expect(response.body.statusCode).toBe(400)
+        expect(response.body.message).toBe('"email" must be a valid email')
+    })
 
     test('Post is badRequest', async () => {
         const response = await supertest(app)
