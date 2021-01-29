@@ -38,6 +38,7 @@ jobs:
           APP_PORT: 3000
           APP_HOST: localhost
           SECRET: sarlanga
+          PWD_SALT_HASH: 656e63726970746170617373776f7264
           JWT_EXPIRY_SECONDS: 10
           PERFORMANCELOG: disabled
           DB_CONNECTION_STRING: mongodb://dev:dev@localhost:27017/nodeapi

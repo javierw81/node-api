@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken'
 import { keyValueClient } from '../providers/keyValueDatabaseProvider'
-import { guid } from '../helpers/crypto'
+import { guid, verifyHash } from '../helpers/crypto'
 import UnauthorizedException from '../models/exceptions/UnauthorizedException'
 import { promisify } from 'util'
 import { UserModel } from '../models/User'
+import { environment } from '../helpers/config'
 
 export interface Payload {
     username: string
@@ -12,7 +13,7 @@ export async function signIn(username: string, password: string): Promise<any> {
 
     const user = await UserModel.findOne({ username: username }).exec()
 
-    if (!user || user.password !== password) {
+    if (!user || verifyHash(password, user.password, environment.crypto.passwordSaltHash)) {
         throw new UnauthorizedException()
     }
 
@@ -74,8 +75,8 @@ function generateToken(payload: Payload): string {
 
 function getTokenConfig() {
     return {
-        secret: process.env.SECRET as string,
-        tokenExpirySeconds: process.env.JWT_EXPIRY_SECONDS ? parseInt(process.env.JWT_EXPIRY_SECONDS as string) : undefined,
-        refreshTokenExpirySeconds: process.env.JWT_REFRESH_EXPIRY_SECONDS ? parseInt(process.env.JWT_REFRESH_EXPIRY_SECONDS as string) : 10000
+        secret: environment.jwt.secret,
+        tokenExpirySeconds: environment.jwt.expiryInSeconds,
+        refreshTokenExpirySeconds: environment.jwt.refreshExpiryInSeconds
     }
 }

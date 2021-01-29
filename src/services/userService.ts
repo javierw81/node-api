@@ -1,3 +1,5 @@
+import { environment } from "../helpers/config";
+import { hash } from "../helpers/crypto";
 import NotImplementedException from "../models/exceptions/NotImplementedException";
 import { UserModel, User, UserDocument } from '../models/User'
 
@@ -16,6 +18,7 @@ export interface IUserUpdate extends IUserCreate {
 export async function signUp(userParams: IUserCreate): Promise<UserDocument> {
     const user: User = {
         ...userParams,
+        password: hash(userParams.password, environment.crypto.passwordSaltHash),
         verify: false,
         active: false
     }

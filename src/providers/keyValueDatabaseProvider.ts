@@ -1,4 +1,5 @@
 import redis from 'redis'
+import { environment } from '../helpers/config'
 import { logger } from './loggerProvider'
 
 enum readyStateEnum {
@@ -9,7 +10,7 @@ enum readyStateEnum {
 export let keyValueClient: redis.RedisClient
 
 export const connectKeyValueDb = (): void => {
-    keyValueClient = redis.createClient(process.env.KEYVALUEDB_CONNECTION_STRING as string, {
+    keyValueClient = redis.createClient(environment.keyValueDatabase.connectionString, {
         retry_strategy: function (options) {
             if (options.error && options.error.code === "ECONNREFUSED") {
                 return new Error("The server refused the connection");

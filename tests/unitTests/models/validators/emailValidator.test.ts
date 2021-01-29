@@ -1,6 +1,6 @@
 import { emailValidator } from '../../../../src/models/validators/emailValidator'
 
-describe('Validator - emailValidator', () => {
+describe('Models - Validators', () => {
     test('emailValidator was success', () => {
         const result = emailValidator.validator("test@test.com")
         expect(result).toBeTruthy()

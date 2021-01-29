@@ -1,10 +1,11 @@
 import { connectDb } from './providers/databaseProvider'
 import { app } from './app'
 import { logger } from './providers/loggerProvider'
+import { environment } from './helpers/config'
 
 // make server listen on some port
-((port = process.env.APP_PORT || 3000) => {
+((port = environment.app.port || 3000) => {
     connectDb().then(() => {
-        app.listen(port, async () => logger.info(`Version: ${process.env.npm_package_version} -> listening on port ${port} `));
+        app.listen(port, async () => logger.info(`Version: ${environment.app.version} -> listening on port ${port} `));
     })
 })()

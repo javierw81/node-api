@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken'
+import { environment } from '../helpers/config';
 import UnauthorizedException from '../models/exceptions/UnauthorizedException';
 import { logger } from '../providers/loggerProvider'
 
@@ -20,7 +21,7 @@ export function authenticationFilter(handler: any, flags: any[]): any {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let decoded: any
         try {
-            decoded = jwt.verify(token, process.env.SECRET as string)
+            decoded = jwt.verify(token, environment.jwt.secret)
             logger.debug('Token decoded', { decoded })
         } catch (ex) {
             return next(new UnauthorizedException())

@@ -1,4 +1,5 @@
 import mongoose, { Mongoose } from 'mongoose'
+import { environment } from '../helpers/config'
 import { logger } from './loggerProvider'
 
 enum readyStateEnum {
@@ -14,7 +15,7 @@ export const statusDb = (): string => {
 }
 
 export const connectDb = (): Promise<Mongoose> => {
-    const cs = process.env.DB_CONNECTION_STRING as string
+    const cs = environment.database.connectionString
     const dbConnection = mongoose.connection
     dbConnection.on('error', () => {
         logger.crit('Database connection FAIL')
@@ -24,7 +25,7 @@ export const connectDb = (): Promise<Mongoose> => {
         logger.info('Database connection READY')
     })
 
-    if (process.env.DB_DEBUG === 'enabled') {
+    if (environment.database.debug) {
         mongoose.set("debug", (collectionName: string, method: string, query: any, doc: any) => {
             logger.debug(`DatabaseProvider: ${collectionName}.${method}`,
                 {

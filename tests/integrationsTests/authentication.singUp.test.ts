@@ -5,6 +5,8 @@ import { dataMocker } from '../supports/dataMocker'
 import { UserModel } from '../../src/models/User'
 import { closeDb, connectDb } from '../../src/providers/databaseProvider'
 import { closeKeyValueDb } from '../../src/providers/keyValueDatabaseProvider'
+import { environment } from '../../src/helpers/config'
+import { hash } from '../../src/helpers/crypto'
 
 describe('Authentication - signUp', () => {
     beforeAll(async () => {
@@ -32,7 +34,10 @@ describe('Authentication - signUp', () => {
             .then(response => response)
 
         expect(response.status).toBe(200)
-        expect(response.body).toMatchObject(userParams)
+        expect(response.body).toMatchObject({
+            ...userParams,
+            password: hash("chimoltrufia", environment.crypto.passwordSaltHash)
+        })
     })
     test('Post is badRequest, email incorrect', async () => {
         const userParams = {
