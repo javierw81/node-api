@@ -3,8 +3,9 @@ import { errorMiddleware } from './middlewares/errorMiddleware';
 import router from './routers/router'
 import * as loggerProvider from './providers/loggerProvider'
 import * as keyValueDatabaseProvider from './providers/keyValueDatabaseProvider'
+import { environment } from './helpers/config';
 
-loggerProvider.config(process.env.LOGGER_LEVEL as string, process.env.LOGGER_FILE as string)
+loggerProvider.config(environment.logger.level, environment.logger.file)
 
 keyValueDatabaseProvider.connectKeyValueDb()
 

@@ -1,9 +1,10 @@
 import Winston, { createLogger, format, transports } from 'winston'
 import DailyRotateFile from 'winston-daily-rotate-file'
+import { environment } from '../helpers/config'
 
 export let logger: Winston.Logger
 
-export const config = (loggerLevel: string, loggerFile: string): void => {
+export const config = (loggerLevel: string | undefined, loggerFile: string | undefined): void => {
     logger = createLogger({
         level: loggerLevel || 'error',
         format: format.combine(
@@ -14,7 +15,7 @@ export const config = (loggerLevel: string, loggerFile: string): void => {
             format.splat(),
             format.json()
         ),
-        defaultMeta: { service: process.env.APP_NAME },
+        defaultMeta: { service: environment.app.name },
         transports: [
             new DailyRotateFile({
                 filename: loggerFile || 'logs/log-%DATE%.log',
@@ -27,7 +28,7 @@ export const config = (loggerLevel: string, loggerFile: string): void => {
         ]
     })
 
-    if (process.env.LOGGER_CONSOLE !== 'disabled') {
+    if (environment.logger.console) {
         const { combine, timestamp, prettyPrint, colorize } = format;
 
         logger.add(new transports.Console({
