@@ -1,5 +1,5 @@
 import { environment } from "../helpers/config";
-import { hash } from "../helpers/crypto";
+import { hash, verifyHash } from "../helpers/crypto";
 import NotImplementedException from "../models/exceptions/NotImplementedException";
 import { UserModel, User, UserDocument } from '../models/User'
 
@@ -24,6 +24,10 @@ export async function signUp(userParams: IUserCreate): Promise<UserDocument> {
     }
 
     return UserModel.create(user)
+}
+
+export async function authenticate(username: string, password: string): Promise<boolean> {
+    return UserModel.findOne({ username: username }).exec().then(user => user != null && verifyHash(password, user.password, environment.crypto.passwordSaltHash))
 }
 
 export async function update(userParams: IUserUpdate): Promise<UserDocument | null> {

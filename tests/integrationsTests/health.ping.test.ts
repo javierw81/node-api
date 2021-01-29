@@ -22,7 +22,6 @@ describe('Health - Ping', () => {
         expect(response.status).toBe(200)
         expect(response.body.statusDb).toBe('connected')
         expect(response.body.statusKeyValueDb).toBe('connected')
-        expect(response.body.status).toBe('ok')
         expect(response.body.appName).toBe('NODE-API')
         expect(response.body.appVersion).toBeDefined()
         expect(response.body.appVersion.split('.').length).toBe(3)
