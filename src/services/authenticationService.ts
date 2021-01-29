@@ -1,19 +1,17 @@
 import jwt from 'jsonwebtoken'
 import { keyValueClient } from '../providers/keyValueDatabaseProvider'
-import { guid, verifyHash } from '../helpers/crypto'
+import { guid } from '../helpers/crypto'
 import UnauthorizedException from '../models/exceptions/UnauthorizedException'
 import { promisify } from 'util'
-import { UserModel } from '../models/User'
+import * as userService from '../services/userService'
 import { environment } from '../helpers/config'
 
 export interface Payload {
     username: string
 }
 export async function signIn(username: string, password: string): Promise<any> {
-
-    const user = await UserModel.findOne({ username: username }).exec()
-
-    if (!user || verifyHash(password, user.password, environment.crypto.passwordSaltHash)) {
+    const isValid = await userService.authenticate(username, password)
+    if (!isValid) {
         throw new UnauthorizedException()
     }
 

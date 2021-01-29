@@ -1,7 +1,7 @@
 export const defaultUsers = [
     {
         "username": "chavotest",
-        "password": "f608ff5750ebeb1971ef17b236dafcc64a26ccca2399703d91478e6a03d5b7180f0cf55531b61f0ade288cc24a2640f7ba677d1d12ef1cd78605fe8946eb4c4d",
+        "password": "9fc61f3f339b24814be9da5b1dab896b932dcebd79838a65dd62d06669c8058d649433ee78d3fccfacd7e2dffb71932c82114fd08906b91ebeeeb1d1538f07d0",
         "email": "javierw81@gmail.com",
         "name": "Chavo Test",
         "surname": "Test"

@@ -11,7 +11,6 @@ class HealthController {
             appVersion: environment.app.version,
             statusDb: statusDb(),
             statusKeyValueDb: statusKeyValueDb(),
-            status: "ok"
         }
         return res.json(ret);
     }
