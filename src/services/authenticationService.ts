@@ -5,6 +5,8 @@ import UnauthorizedException from '../models/exceptions/UnauthorizedException'
 import { promisify } from 'util'
 import * as userService from '../services/userService'
 import { environment } from '../helpers/config'
+import { logger } from '../providers/loggerProvider'
+import BadRequestException from '../models/exceptions/BadRequestException'
 
 export interface Payload {
     username: string
@@ -21,15 +23,19 @@ export async function signIn(username: string, password: string): Promise<any> {
 
     const token = generateToken(payload)
     const refreshToken = generateRefreshToken(username)
+    const result = { username, refreshToken, token }
+    logger.info(`User ${username} was signIn`)
+    logger.debug(`User ${username} was signIn`, result)
 
-    return { username, refreshToken, token }
+    return result
 }
 
 export async function signOut(username: string, refreshToken: string): Promise<void> {
     await verifyRefreshToken(username, refreshToken)
     keyValueClient.del(username)
+    logger.info(`User ${username} was signOut`)
+    logger.debug(`User ${username} was signOut`, { refreshToken })
 }
-
 
 export async function refresh(username: string, refreshToken: string): Promise<any> {
     const { refreshTokenExpirySeconds } = getTokenConfig()
@@ -41,12 +47,25 @@ export async function refresh(username: string, refreshToken: string): Promise<a
 
     keyValueClient.expire(refreshToken, refreshTokenExpirySeconds)
 
-    return { username, token }
+    const result = { username, token }
+    logger.info(`User ${username} was refresh`)
+    logger.debug(`User ${username} was refresh`, result)
+
+    return result
+}
+
+export async function verifyEmail(username: string, verifyToken: string): Promise<any> {
+    const usernameStored: string | null = await promisify(keyValueClient.get).bind(keyValueClient)(verifyToken);
+    if (usernameStored == null || usernameStored !== username) {
+        throw new BadRequestException("Verify token was incorrect")
+    }
+    logger.info(`User ${username} was verify`)
+    logger.debug(`User ${username} was verify`, { username, verifyToken })
 }
 
 async function verifyRefreshToken(username: string, refreshToken: string): Promise<void> {
-    const refreshTokenStored: string | null = await promisify(keyValueClient.get).bind(keyValueClient)(refreshToken);
-    if (refreshTokenStored == null || refreshTokenStored !== username) {
+    const usernameStored: string | null = await promisify(keyValueClient.get).bind(keyValueClient)(refreshToken);
+    if (usernameStored == null || usernameStored !== username) {
         throw new UnauthorizedException()
     }
 }
@@ -72,9 +91,11 @@ function generateToken(payload: Payload): string {
 }
 
 function getTokenConfig() {
-    return {
+    const config = {
         secret: environment.jwt.secret,
         tokenExpirySeconds: environment.jwt.expiryInSeconds,
         refreshTokenExpirySeconds: environment.jwt.refreshExpiryInSeconds
     }
+    logger.debug(`Get token config`, config)
+    return config
 }

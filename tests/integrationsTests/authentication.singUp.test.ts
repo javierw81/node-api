@@ -7,6 +7,8 @@ import { closeDb, connectDb } from '../../src/providers/databaseProvider'
 import { closeKeyValueDb } from '../../src/providers/keyValueDatabaseProvider'
 import { environment } from '../../src/helpers/config'
 import { hash } from '../../src/helpers/crypto'
+import * as emailProvider from '../../src/providers/emailProvider'
+import sinon from 'sinon'
 
 describe('Authentication - signUp', () => {
     beforeAll(async () => {
@@ -20,6 +22,8 @@ describe('Authentication - signUp', () => {
     })
 
     test('Post is success', async () => {
+        const sendMailStub = sinon.stub(emailProvider.emailClient, "sendMail").returns(Promise.resolve(true))
+
         const userParams = {
             "username": "chavotest",
             "password": "chimoltrufia",
@@ -38,6 +42,8 @@ describe('Authentication - signUp', () => {
             ...userParams,
             password: hash("chimoltrufia", environment.crypto.passwordSaltHash)
         })
+        expect(sendMailStub.calledOnce).toBeTruthy()
+        sendMailStub.restore()
     })
     test('Post is badRequest, email incorrect', async () => {
         const userParams = {

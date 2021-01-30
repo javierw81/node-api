@@ -1,8 +1,8 @@
 import { connectEmailSender, emailClient } from "../../../src/providers/emailProvider";
 import nodemailer from 'nodemailer'
-import { patterns } from "../../../src/controllers/validations/validatorHelper"
 import * as loggerProvider from '../../../src/providers/loggerProvider'
 import { environment } from "../../../src/helpers/config"
+import { patterns } from "../../../src/helpers/patterns";
 
 describe('Providers - Email', () => {
     beforeAll(async () => {
