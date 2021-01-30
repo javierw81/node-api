@@ -1,9 +1,12 @@
 export const environment = {
     mode: process.env.NODE_ENV,
+
     app: {
         name: process.env.APP_NAME as string,
         version: process.env.npm_package_version as string,
-        port: process.env.APP_PORT as string
+        port: process.env.APP_PORT as string,
+        host: process.env.APP_HOST as string,
+        baseUrl: process.env.APP_BASE_URL as string,
     },
     jwt: {
         secret: process.env.SECRET as string,
@@ -38,5 +41,8 @@ export const environment = {
     },
     crypto: {
         passwordSaltHash: process.env.PWD_SALT_HASH as string
+    },
+    security: {
+        verifyTokenExpirySeconds: process.env.VERIFY_TOKEN_EXPIRY_SECONDS ? parseInt(process.env.VERIFY_TOKEN_EXPIRY_SECONDS as string) : 10000
     }
 }

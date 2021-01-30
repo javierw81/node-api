@@ -9,3 +9,4 @@ export default express
     .post('/signup', applyFilters(AuthenticationController.signUp, AuthenticationEnum.allowAnonymous))
     .post('/signout', applyFilters(AuthenticationController.signOut))
     .post('/refresh', applyFilters(AuthenticationController.refresh, AuthenticationEnum.allowAnonymous))
+    .get('/verify/:username/:verifyToken', applyFilters(AuthenticationController.verify, AuthenticationEnum.allowAnonymous))

@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import Joi from 'joi'
+import { patterns } from '../helpers/patterns'
 import { logger } from '../providers/loggerProvider'
 import * as authenticationService from '../services/authenticationService'
 import * as userService from '../services/userService'
-import { validate, patterns } from './validations/validatorHelper'
+import { validate } from './validations/validatorHelper'
 
 class AuthenticationController {
     async signIn(req: Request, res: Response, next: NextFunction) {
@@ -62,6 +63,19 @@ class AuthenticationController {
 
         const ret = await userService.signUp(result)
         res.status(200).json(ret)
+    }
+
+    async verify(req: Request, res: Response, next: NextFunction) {
+        const schema = Joi.object({
+            username: Joi.string().alphanum().min(3).max(30).required(),
+            verifyToken: Joi.string().required()
+        })
+
+        const { username, verifyToken } = await validate(schema, req.params)
+
+        await authenticationService.verifyEmail(username, verifyToken)
+
+        res.status(200).json({})
     }
 }
 
