@@ -9,6 +9,11 @@ enum readyStateEnum {
 
 export let keyValueClient: redis.RedisClient
 
+export const statusKeyValueDb = (): string => {
+    const readyState: readyStateEnum = keyValueClient.connected ? readyStateEnum.connected : readyStateEnum.disconnected
+    return readyStateEnum[readyState]
+}
+
 export const connectKeyValueDb = (): void => {
     keyValueClient = redis.createClient(environment.keyValueDatabase.connectionString, {
         retry_strategy: function (options) {
@@ -32,11 +37,6 @@ export const connectKeyValueDb = (): void => {
     keyValueClient.on("ready", () => {
         logger.info('KeyValueDatabase connection READY')
     })
-}
-
-export const statusKeyValueDb = (): string => {
-    const readyState: readyStateEnum = keyValueClient.connected ? readyStateEnum.connected : readyStateEnum.disconnected
-    return readyStateEnum[readyState]
 }
 
 export const closeKeyValueDb = (): void => {

@@ -27,6 +27,15 @@ export const environment = {
     keyValueDatabase: {
         connectionString: process.env.KEYVALUEDB_CONNECTION_STRING as string
     },
+    email: {
+        defaultFrom: process.env.EMAIL_FROM as string,
+        host: process.env.EMAIL_HOST as string,
+        port: parseInt(process.env.EMAIL_PORT as string),
+        auth: {
+            user: process.env.EMAIL_USER as string,
+            password: process.env.EMAIL_PWD as string
+        }
+    },
     crypto: {
         passwordSaltHash: process.env.PWD_SALT_HASH as string
     }

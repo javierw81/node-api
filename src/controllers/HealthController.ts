@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { environment } from '../helpers/config';
 import { statusDb } from '../providers/databaseProvider'
+import { statusEmail } from '../providers/emailProvider';
 import { statusKeyValueDb } from '../providers/keyValueDatabaseProvider'
 
 class HealthController {
@@ -11,6 +12,7 @@ class HealthController {
             appVersion: environment.app.version,
             statusDb: statusDb(),
             statusKeyValueDb: statusKeyValueDb(),
+            statusEmail: await statusEmail()
         }
         return res.json(ret);
     }

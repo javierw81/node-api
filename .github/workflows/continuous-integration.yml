@@ -47,4 +47,9 @@ jobs:
           LOGGER_LEVEL: error
           LOGGER_CONSOLE: disabled
           LOGGER_FILE: logs/log-%DATE%.log
+          EMAIL_DEFAULT_FROM: troy.hayes@ethereal.email
+          EMAIL_HOST: smtp.ethereal.email
+          EMAIL_PORT: 587
+          EMAIL_USER: troy.hayes@ethereal.email
+          EMAIL_PWD: ATTzaUA1mqMPZATWDz
      
