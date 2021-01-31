@@ -1,5 +1,6 @@
 import express from 'express';
 import { errorMiddleware } from './middlewares/errorMiddleware';
+import cors from 'cors'
 import router from './routers/router'
 import * as loggerProvider from './providers/loggerProvider'
 import * as emailProvider from './providers/emailProvider'
@@ -14,5 +15,6 @@ keyValueDatabaseProvider.connectKeyValueDb()
 
 export const app = express()
     .use(express.json())
+    .use(cors({ origin: environment.security.cors.origin }))
     .use('/api', router)
     .use(errorMiddleware);
