@@ -1,5 +1,5 @@
 export const environment = {
-    mode: process.env.NODE_ENV,
+    mode: process.env.NODE_ENV as string,
 
     app: {
         name: process.env.APP_NAME as string,
@@ -43,6 +43,9 @@ export const environment = {
         passwordSaltHash: process.env.PWD_SALT_HASH as string
     },
     security: {
-        verifyTokenExpirySeconds: process.env.VERIFY_TOKEN_EXPIRY_SECONDS ? parseInt(process.env.VERIFY_TOKEN_EXPIRY_SECONDS as string) : 10000
+        verifyTokenExpirySeconds: process.env.VERIFY_TOKEN_EXPIRY_SECONDS ? parseInt(process.env.VERIFY_TOKEN_EXPIRY_SECONDS as string) : 10000,
+        cors: {
+            origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN as string : '*'
+        }
     }
 }

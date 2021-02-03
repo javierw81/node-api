@@ -14,7 +14,7 @@ export function authenticationFilter(handler: any, flags: any[]): any {
             return await handler(req, res, next)
         }
 
-        const token: any = req.headers["x-access-token"] || req.headers["authorization"]
+        const token: any = req.headers["x-access-token"] || req.headers["authorization"] || req.headers["Authorization"]
         if (!token) {
             return next(new UnauthorizedException())
         }

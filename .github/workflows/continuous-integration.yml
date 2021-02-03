@@ -29,6 +29,8 @@ jobs:
         run: npm install
       - name: Run Linter
         run: npm run eslint   
+      - name: Run api-docs
+        run: npm run api-docs        
       - name: Run Docker compose
         run: npm run docker:compose:up
       - name: Run Test

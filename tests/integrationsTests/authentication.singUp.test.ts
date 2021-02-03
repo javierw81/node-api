@@ -37,7 +37,7 @@ describe('Authentication - signUp', () => {
             .send(userParams)
             .then(response => response)
 
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(201)
         expect(response.body).toMatchObject({
             ...userParams,
             password: hash("chimoltrufia", environment.crypto.passwordSaltHash)

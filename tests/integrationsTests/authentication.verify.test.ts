@@ -24,7 +24,8 @@ describe('Authentication - verify', () => {
     })
 
     test("Get is success", async () => {
-        const spy = sinon.spy(keyValueClient, 'set')
+        const spySet = sinon.spy(keyValueClient, 'set')
+
         const userParams = {
             "username": "chavotest2",
             "password": "chimoltrufia",
@@ -38,9 +39,9 @@ describe('Authentication - verify', () => {
             .send(userParams)
             .then(response => response)
 
-        expect(responseSignup.status).toBe(200)
+        expect(responseSignup.status).toBe(201)
 
-        const args = spy.getCall(0).args
+        const args = spySet.getCall(0).args
         const verifyToken = args[0]
         const username = args[1]
 
@@ -49,7 +50,8 @@ describe('Authentication - verify', () => {
             .then(response => response)
 
         expect(response.status).toBe(200)
-
+        expect(spySet.calledOnce).toBeTruthy()
+        spySet.restore()
     })
 
     test('Get is success with specific verifyToken', async () => {

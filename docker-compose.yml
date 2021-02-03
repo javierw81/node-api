@@ -14,3 +14,12 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 'admin'
     volumes:
     - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro      
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-ui
+    ports:
+      - "8001:8080" 
+    environment:
+      SWAGGER_JSON: /api-docs/api.json
+    volumes:
+      - ./api-docs:/api-docs
