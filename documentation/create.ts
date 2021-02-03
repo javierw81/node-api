@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { createSwaggerSpecification } from './SwaggerSpecification'
+import { createSwaggerSpecification } from './swaggerSpecification'
 
 let specification
 try {

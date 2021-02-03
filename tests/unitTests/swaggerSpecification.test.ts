@@ -1,4 +1,4 @@
-import { createSwaggerSpecification } from "../../documentation/SwaggerSpecification";
+import { createSwaggerSpecification } from "../../documentation/swaggerSpecification";
 
 describe('API Documentation - create', () => {
     test('YAML to Json', () => {
