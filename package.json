@@ -1,6 +1,6 @@
 {
   "name": "node-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "src/server.ts",
   "scripts": {
@@ -11,7 +11,7 @@
     "eslint": "./node_modules/.bin/eslint .",
     "eslintfix": "./node_modules/.bin/eslint . --fix",
     "docker:compose:up": "docker-compose up -d",
-    "api-docs": "NODE_ENV=development npx ts-node -r dotenv/config api-docs/generateApiJsDoc.ts dotenv_config_path=.env.development"
+    "api-docs": "NODE_ENV=development DEBUG=-* ts-node -r dotenv/config documentation/create.ts dotenv_config_path=.env.development"
   },
   "repository": {
     "type": "git",

@@ -62,7 +62,7 @@ class AuthenticationController {
         const result = await validate(schema, req.body)
 
         const ret = await userService.signUp(result)
-        res.status(200).json(ret)
+        res.status(201).json(ret)
     }
 
     async verify(req: Request, res: Response, next: NextFunction) {

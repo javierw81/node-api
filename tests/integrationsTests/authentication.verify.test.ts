@@ -39,7 +39,7 @@ describe('Authentication - verify', () => {
             .send(userParams)
             .then(response => response)
 
-        expect(responseSignup.status).toBe(200)
+        expect(responseSignup.status).toBe(201)
 
         const args = spySet.getCall(0).args
         const verifyToken = args[0]
