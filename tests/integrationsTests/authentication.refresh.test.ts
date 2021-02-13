@@ -58,7 +58,7 @@ describe('Authentication - refresh', () => {
         expect(response.body.refreshToken).toBeUndefined()
         expect(response.body.status).toBe('error')
         expect(response.body.statusCode).toBe(401)
-        expect(response.body.message).toBe('Invalid token')
+        expect(response.body.message).toBe('Unauthorized or Invalid token')
     })
 
     test('Post is badRequest', async () => {

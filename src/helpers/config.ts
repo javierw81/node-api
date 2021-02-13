@@ -45,7 +45,8 @@ export const environment = {
     security: {
         verifyTokenExpirySeconds: process.env.VERIFY_TOKEN_EXPIRY_SECONDS ? parseInt(process.env.VERIFY_TOKEN_EXPIRY_SECONDS as string) : 10000,
         cors: {
-            origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN as string : '*'
+            origin: process.env.CORS_ORIGIN ? (process.env.CORS_ORIGIN as string).replace(' ', '').split(',') : '*'
         }
     }
 }
+
